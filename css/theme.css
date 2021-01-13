@@ -1,19 +1,55 @@
-body {
-    background-color:antiquewhite
+html {
+    background-color:white
 }
 
-#connect {
-    border-radius:500px;
-    padding: 5px;
+.connection{
     margin-top:20px;
-    margin-left: 5px;
+    margin-left: 30px;
 }
 
-.query-section {
-    margin-top:50px;    
+#network {
+    border-radius:500px;
 }
 
-#query {
+#summary {
+    margin-top:50px;
+}
+
+.div-offset-large{
+    position: relative;
+    left:150px;
+}
+
+.div-offset-small{
+    position:relative;
+    left:50px;
+}
+
+.text-offset {
+    position: relative;
+    top:2px;
+}
+
+.offset-small {
+    margin-left:20px
+}
+
+.add-section {
+    margin-top:20px;    
+}
+
+#account-to-add {
     width: 420px;
 }
 
+.select {
+    width: 250px;
+}
+
+.charge-number {
+    width: 250px;
+}
+
+.hide {
+    display: none;
+}
