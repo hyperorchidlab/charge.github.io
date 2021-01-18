@@ -94,13 +94,19 @@ async function getAllPools() {
 
     window.app.poolList = await window.app.market.methods.getPoolList().call()
 
-    let pools = [{ "name": "bear", "address": "0xd926548A6eb9A77471Db11833753C7371643a211" },
-    { "name": "HK_HOP", "address": "0xfa0628a247e35ba340Eb1D4A058AB8a9755DD044" },
-    { "name": "Dragon", "address": "0x5A610EB7123A9822ecD7a114C715c17156617a04" },
-    { "name": "jpv2_gr", "address": "0xA5226f019847fAac5bcdce67667E1d8f61e8Eac1" },
-    { "name": "india 007", "address": "0x4e19D99eeB2f8b9FDa699340B80455106FDECD95" },
-    { "name": "freenet1011", "address": "0xfb0b71a86018559dAA4f5C97b2503d93d898FC83" },
-    { "name": "Wonderland", "address": "0x7A8125B5FB3334f01EF79aEe42c4073aCAe2C799"}]
+    let pools58 = await fetch("https://api.keyvalue.xyz/e5854a0e/pirate_pools").then(x=>x.text())
+    
+    let _pools = JSON.parse(bs58.decode(pools58.replace(/\n/g,""))).pools
+    let pools = _pools.map(function(x){
+        return {"name":x.Name, "address":x.MainAddr}
+    })
+    // let pools = [{ "name": "bear", "address": "0xd926548A6eb9A77471Db11833753C7371643a211" },
+    // { "name": "HK_HOP", "address": "0xfa0628a247e35ba340Eb1D4A058AB8a9755DD044" },
+    // { "name": "Dragon", "address": "0x5A610EB7123A9822ecD7a114C715c17156617a04" },
+    // { "name": "jpv2_gr", "address": "0xA5226f019847fAac5bcdce67667E1d8f61e8Eac1" },
+    // { "name": "india 007", "address": "0x4e19D99eeB2f8b9FDa699340B80455106FDECD95" },
+    // { "name": "freenet1011", "address": "0xfb0b71a86018559dAA4f5C97b2503d93d898FC83" },
+    // { "name": "Wonderland", "address": "0x7A8125B5FB3334f01EF79aEe42c4073aCAe2C799"}]
     window.app.pools = pools.reduce(function(a,b) {
         a[b.name] = b.address
         return a
