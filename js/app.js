@@ -1,4 +1,4 @@
-import { market_abi, HOP_abi, batch_abi, market_address, HOP_address, batch_address} from "./address.js"
+import { market_abi, HOP_abi, batch_abi, addresses } from "./address.js"
 import { OrderMap } from "./utils.js"
 
 window.onload = async () => {
@@ -64,17 +64,37 @@ async function start() {
     let network = await web3.eth.net.getNetworkType();
     u("#network").html(network).toggleClass("uk-label-success uk-label-danger")
 
+    let HOP_address
+    let market_address
+    let batch_address
+
+    if (network == "ropsten") {
+        HOP_address = addresses.ropsten.HOP_address
+        market_address = addresses.ropsten.market_address
+        batch_address = addresses.ropsten.batch_address
+        window.app.pool_list_url = addresses.ropsten.pool_list_url;
+    } else if (network == "main") {
+        HOP_address = addresses.mainnet.HOP_address
+        market_address = addresses.mainnet.market_address
+        batch_address = addresses.mainnet.batch_address
+        window.app.pool_list_url = addresses.mainnet.pool_list_url;
+    }else{
+        showMsgSimple("invalid network")
+        return
+    }
+
     window.app.hop = new web3.eth.Contract(HOP_abi, HOP_address)
     window.app.market = new web3.eth.Contract(market_abi, market_address)
     window.app.batch = new web3.eth.Contract(batch_abi, batch_address)
+
 
     getBalance()
     getAllPools()
 
     window.app.hop.methods.allowance(window.app.current_account, batch_address).call().then(d => {
-        if(d < 200000000000000000000){
+        if (d < 200000000000000000000) {
             u("#approve-button").removeClass("hide")
-        }else{
+        } else {
             window.app.approved = true
         }
     })
@@ -94,11 +114,11 @@ async function getAllPools() {
 
     window.app.poolList = await window.app.market.methods.getPoolList().call()
 
-    let pools58 = await fetch("https://api.keyvalue.xyz/e5854a0e/pirate_pools").then(x=>x.text())
-    
-    let _pools = JSON.parse(bs58.decode(pools58.replace(/\n/g,""))).pools
-    let pools = _pools.map(function(x){
-        return {"name":x.Name, "address":x.MainAddr}
+    let pools58 = await fetch(window.app.pool_list_url).then(x => x.text())
+
+    let _pools = JSON.parse(bs58.decode(pools58.replace(/\n/g, ""))).pools
+    let pools = _pools.map(function (x) {
+        return { "name": x.Name, "address": x.MainAddr }
     })
     // let pools = [{ "name": "bear", "address": "0xd926548A6eb9A77471Db11833753C7371643a211" },
     // { "name": "HK_HOP", "address": "0xfa0628a247e35ba340Eb1D4A058AB8a9755DD044" },
@@ -107,10 +127,10 @@ async function getAllPools() {
     // { "name": "india 007", "address": "0x4e19D99eeB2f8b9FDa699340B80455106FDECD95" },
     // { "name": "freenet1011", "address": "0xfb0b71a86018559dAA4f5C97b2503d93d898FC83" },
     // { "name": "Wonderland", "address": "0x7A8125B5FB3334f01EF79aEe42c4073aCAe2C799"}]
-    window.app.pools = pools.reduce(function(a,b) {
+    window.app.pools = pools.reduce(function (a, b) {
         a[b.name] = b.address
         return a
-    },{})
+    }, {})
     u("#pool-list").html("").append(pool => `<option addr=${pool.address}>${pool.name}</option>`, pools)
 
 
@@ -193,9 +213,9 @@ async function approve() {
     }
 }
 
-async function batchCharge(){
+async function batchCharge() {
 
-    if(!window.app.approved){
+    if (!window.app.approved) {
         showMsgSimple("please approve token first")
         return
     }
@@ -207,23 +227,23 @@ async function batchCharge(){
     let _pool = []
     let _index = []
     let o = window.app.oMap
-    for(let u of o.keys()){
+    for (let u of o.keys()) {
         let plist = o.get(u)
-        for (let p of plist.keys()){
+        for (let p of plist.keys()) {
             _user.push(u)
-            _number.push(new BN(plist.get(p) *1e9 ).mul(new BN(1e9)).toString())
+            _number.push(new BN(plist.get(p) * 1e9).mul(new BN(1e9)).toString())
             _pool.push(pools[p])
             _index.push(list.indexOf(pools[p]))
         }
     }
     try {
         await window.app.batch.methods.batchCharge(_user, _number, _pool, _index)
-                    .send({from : window.app.current_account})
+            .send({ from: window.app.current_account })
         showMsgSimple("charge success")
-    }catch (error) {
+    } catch (error) {
         if (error.code != 4001) {
             jumpToEtherscan(window.app.current_account)
         }
     }
-    
+
 }
