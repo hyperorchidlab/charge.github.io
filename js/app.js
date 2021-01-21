@@ -113,6 +113,7 @@ async function getBalance() {
 async function getAllPools() {
 
     window.app.poolList = await window.app.market.methods.getPoolList().call()
+    window.app.poolList = window.app.poolList.map(x =>x.toLowerCase())
 
     let pools58 = await fetch(window.app.pool_list_url).then(x => x.text())
 
@@ -128,7 +129,7 @@ async function getAllPools() {
     // { "name": "freenet1011", "address": "0xfb0b71a86018559dAA4f5C97b2503d93d898FC83" },
     // { "name": "Wonderland", "address": "0x7A8125B5FB3334f01EF79aEe42c4073aCAe2C799"}]
     window.app.pools = pools.reduce(function (a, b) {
-        a[b.name] = b.address
+        a[b.name] = b.address.toLowerCase()
         return a
     }, {})
     u("#pool-list").html("").append(pool => `<option addr=${pool.address}>${pool.name}</option>`, pools)
@@ -233,7 +234,7 @@ async function batchCharge() {
             _user.push(u)
             _number.push(new BN(plist.get(p) * 1e9).mul(new BN(1e9)).toString())
             _pool.push(pools[p])
-            _index.push(list.indexOf(pools[p]))
+            _index.push(list.indexOf(pools[p].toLowerCase()))
         }
     }
     try {
