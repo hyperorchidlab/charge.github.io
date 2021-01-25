@@ -8,7 +8,7 @@ html {
 }
 
 #network {
-    margin-left: 8%;
+    margin-left: 6%;
     margin-bottom: 10px;
     border-radius:500px;
 }
@@ -19,7 +19,7 @@ html {
 }
 
 .account-info {
-    margin-left: 8%;
+    margin-left: 6%;
     /* width: 60%; */
 }
 
@@ -34,6 +34,7 @@ html {
 }
 
 .text-offset {
+    font-size: 1rem;
     position: relative;
     top:2px;
 }
@@ -43,7 +44,7 @@ html {
 }
 
 .add-section {
-    margin-left: 8%;
+    margin-left: 6%;
     margin-top:20px;
 }
 
