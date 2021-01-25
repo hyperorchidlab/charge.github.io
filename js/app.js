@@ -32,6 +32,10 @@ function jumpToEtherscan(address) {
     }, 2000)
 }
 
+let HOP_address
+let market_address
+let batch_address
+
 async function start() {
     // Modern dApp browsers...
     if (window.ethereum) {
@@ -64,9 +68,6 @@ async function start() {
     let network = await web3.eth.net.getNetworkType();
     u("#network").html(network).toggleClass("uk-label-success uk-label-danger")
 
-    let HOP_address
-    let market_address
-    let batch_address
 
     if (network == "ropsten") {
         HOP_address = addresses.ropsten.HOP_address
@@ -78,7 +79,7 @@ async function start() {
         market_address = addresses.mainnet.market_address
         batch_address = addresses.mainnet.batch_address
         window.app.pool_list_url = addresses.mainnet.pool_list_url;
-    }else{
+    } else {
         showMsgSimple("invalid network")
         return
     }
@@ -113,7 +114,7 @@ async function getBalance() {
 async function getAllPools() {
 
     window.app.poolList = await window.app.market.methods.getPoolList().call()
-    window.app.poolList = window.app.poolList.map(x =>x.toLowerCase())
+    window.app.poolList = window.app.poolList.map(x => x.toLowerCase())
 
     let pools58 = await fetch(window.app.pool_list_url).then(x => x.text())
 
@@ -208,6 +209,7 @@ async function approve() {
             .send({ from: window.app.current_account })
         showMsgSimple("approve success")
     } catch (error) {
+        console.log(error.message)
         if (error.code != 4001) {
             jumpToEtherscan(window.app.current_account)
         }
