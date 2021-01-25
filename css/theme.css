@@ -4,15 +4,23 @@ html {
 
 .connection{
     margin-top:20px;
-    margin-left: 30px;
+    /* margin-left: 30px; */
 }
 
 #network {
+    margin-left: 8%;
+    margin-bottom: 10px;
     border-radius:500px;
 }
 
 #summary {
     margin-top:50px;
+    width: 60%;
+}
+
+.account-info {
+    margin-left: 8%;
+    /* width: 60%; */
 }
 
 .div-offset-large{
@@ -22,7 +30,7 @@ html {
 
 .div-offset-small{
     position:relative;
-    left:50px;
+    /* left:50px; */
 }
 
 .text-offset {
@@ -31,15 +39,16 @@ html {
 }
 
 .offset-small {
-    margin-left:20px
+    /* margin-left:20px */
 }
 
 .add-section {
-    margin-top:20px;    
+    margin-left: 8%;
+    margin-top:20px;
 }
 
 #account-to-add {
-    width: 420px;
+    width: 60%;
 }
 
 .select {
