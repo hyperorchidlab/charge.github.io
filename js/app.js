@@ -203,12 +203,10 @@ function updateOMap() {
     u("#hop-count").html(hops)
 }
 
-
 function replacepos(text,start,stop,replacetext){
     let mystr = text.substr(0,start-1)+replacetext+text.substr(stop+1);
     return mystr;
 }
-//  replacepos('测试文字csdn', 2, 4, "**") //测试**csdn
 
 async function approve() {
     try {
