@@ -13,6 +13,10 @@ html {
     border-radius:500px;
 }
 
+#charge-address {
+    font-size: 0.8rem;
+}
+
 #summary {
     margin-top:50px;
     width: 60%;
@@ -42,6 +46,10 @@ html {
 .offset-small {
     /* margin-left:20px */
 }
+
+/* .display-list {
+    font-size: 0.6rem;
+} */
 
 .add-section {
     margin-left: 6%;

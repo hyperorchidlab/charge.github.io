@@ -177,7 +177,7 @@ function updateOMap() {
     for (let _i of c.keys()) {
         let _li = u(`<li>`)
         u("#display-list").append(_li)
-        _li.append(`<span>${_i}</span>`)
+        _li.append(`<span>${replacepos(_i, 8, 36, '...')}</span>`)
             .append(u(`<span uk-icon="trash" class="offset-small"></span>`).on("click", function (e) {
                 c.remove(_i)
                 updateOMap()
@@ -202,6 +202,13 @@ function updateOMap() {
     let hops = c.flatten().map(e => parseFloat(e.value)).reduce((a, b) => a + b)
     u("#hop-count").html(hops)
 }
+
+
+function replacepos(text,start,stop,replacetext){
+    let mystr = text.substr(0,start-1)+replacetext+text.substr(stop+1);
+    return mystr;
+}
+//  replacepos('测试文字csdn', 2, 4, "**") //测试**csdn
 
 async function approve() {
     try {
